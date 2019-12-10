@@ -1,0 +1,23 @@
+a) Lokalisieren Sie wo im Code der Fehler auftritt (also: *Auslöser* des Fehlers), ermitteln Sie die *Ursache* des Fehlers (nicht das selbe!). Was müssten Sie im obigen Code-Snippet ändern, damit der Fehler nicht mehr auftritt?  
+Benutzen Sie den interaktiven Debugger und die anderen Debugging-Werkzeige die Sie kennen um diese Aufgabe zu lösen.
+
+`traceback()` output:
+
+4: as.graphicsAnnot(legend)
+3: legend(legendpos, c(colnames(data$y)[outlier]), col = rainbow(n), 
+       lty = 1, ncol = ncol, ...)
+2: fbag(data, factor, xlab = xlab, ylab = ylab, plotlegend = plotlegend, 
+       legendpos = legendpos, ncol = ncol, projmethod = projmethod, 
+       ...)
+1: fboxplot(x_fds)
+
+The error is triggered by `as.graphicsAnnot(legend)`. The Argument "legend" is missing, with no default.
+The cause for the error is in the data argument for `fboxplot`. x_fds <- fds(x = t_grid, y = x) doesn't provide a column name for `y` (hier `x`).
+
+if(is.null(colnames(y))) {
+  warning("Please assign column name for the data matrix.")
+}
+
+b) Wie könnte der Code im `rainbow`-Paket verbessert werden um den obigen Fehler zu vermeiden? (keine Implementation gefragt, Pseudo-Code / Lösungsskizze genügt...)
+
+In the function the argument `plotlegend` can be set as FALSE. Alternatively names can be setted for `x`.

@@ -1,0 +1,24 @@
+a)Benutzen Sie `traceback()` um rauszukriegen warum `plot_scatterhist(trees)` nicht funktioniert. Beschreiben Sie das Problem.
+
+7: plot(...)
+6: localPlot(x[, j], x[, i], xlab = "", ylab = "", axes = FALSE, 
+       type = "n", ..., log = l)
+5: pairs.default(data.matrix(x), ...)
+4: pairs(data.matrix(x), ...)
+3: plot.data.frame(x, xlab = "", ylab = "", ...)
+2: plot(x, xlab = "", ylab = "", ...) at scatterhist-start.R#5
+1: plot_scatterhist(trees)
+
+Plot_scatterhist takes two variables as arguments.Trees has 3 variables, so another function is called `plot.data.frame`. For more than two columns it first calls data.matrix() to convert the data frame to a numeric matrix and then calls pairs() to produce a scatterplot matrix. Plot() gets 2 arguments for x, which leads to an error.
+
+b) Benutzen Sie `debug()` um bei dem Aufruf `plot_scatterhist(x)` Zeile für Zeile durch den Code zu gehen. Quadrieren Sie die Daten *nachdem* der Scatterplot gezeichnet wurde aber *bevor* die Histogramme gezeichnet werden. Das sollte dann -- völlig sinnloserweise -- so wie die untenstehende Grafik aussehen:
+
+trace(plot_scatterhist, at = 5, quote({
+  x <- x^2
+}))
+plot_scatterhist(x)
+untrace(plot_scatterhist)
+
+Steps: debug(plot_scatterhist), plot_scatterhist(x), click of next, set x to x^2...
+
+c) Setzen Sie einen Breakpoint in `plot_scatterhist()` so, dass sie den interaktiven Debugger genau vor dem ersten Aufruf von `plot()` in `plot_scatterhist()` betreten.
